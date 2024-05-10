@@ -4,6 +4,8 @@ export default function Login() {
   const [userData, setUserData] = useState({ email: "", password: "" });
   console.log(userData);
 
+  const emailIsInvalid = userData.email !== "" && !userData.email.includes("@");
+
   function handleSubmit(e) {
     e.preventDefault();
     setUserData({ email: "", password: "" });
@@ -27,6 +29,9 @@ export default function Login() {
             onChange={handleChange}
             value={userData.email}
           />
+          <div className="control-error">
+            {emailIsInvalid && <p>Please enter a valid email address.</p>}
+          </div>
         </div>
 
         <div className="control no-margin">
