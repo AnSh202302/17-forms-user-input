@@ -2,9 +2,13 @@ import { useState } from "react";
 
 export default function Login() {
   const [userData, setUserData] = useState({ email: "", password: "" });
+  const [didEdit, setDidEdit] = useState({
+    email: false,
+    password: false,
+  });
   console.log(userData);
 
-  const emailIsInvalid = userData.email !== "" && !userData.email.includes("@");
+  const emailIsInvalid = didEdit.email && !userData.email.includes("@");
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -13,6 +17,17 @@ export default function Login() {
   function handleChange(e) {
     const { name, value } = e.target;
     setUserData((prev) => ({ ...prev, [name]: value }));
+    setDidEdit((prev) => ({
+      ...prev,
+      [name]: false,
+    }));
+  }
+
+  function handleInputBlur(identifier) {
+    setDidEdit((prev) => ({
+      ...prev,
+      [identifier]: true,
+    }));
   }
 
   return (
@@ -28,6 +43,7 @@ export default function Login() {
             name="email"
             onChange={handleChange}
             value={userData.email}
+            onBlur={() => handleInputBlur("email")}
           />
           <div className="control-error">
             {emailIsInvalid && <p>Please enter a valid email address.</p>}
@@ -42,6 +58,7 @@ export default function Login() {
             name="password"
             onChange={handleChange}
             value={userData.password}
+            onBlur={() => handleInputBlur("password")}
           />
         </div>
       </div>
