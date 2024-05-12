@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Input from "./Input";
 
 export default function Login() {
   const [userData, setUserData] = useState({ email: "", password: "" });
@@ -9,6 +10,8 @@ export default function Login() {
   console.log(userData);
 
   const emailIsInvalid = didEdit.email && !userData.email.includes("@");
+  const passwordIsInvalid =
+    didEdit.password && userData.password.trim().length < 6;
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -35,32 +38,26 @@ export default function Login() {
       <h2>Login</h2>
 
       <div className="control-row">
-        <div className="control no-margin">
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            name="email"
-            onChange={handleChange}
-            value={userData.email}
-            onBlur={() => handleInputBlur("email")}
-          />
-          <div className="control-error">
-            {emailIsInvalid && <p>Please enter a valid email address.</p>}
-          </div>
-        </div>
-
-        <div className="control no-margin">
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            name="password"
-            onChange={handleChange}
-            value={userData.password}
-            onBlur={() => handleInputBlur("password")}
-          />
-        </div>
+        <Input
+          label="Email"
+          id="email"
+          type="email"
+          name="email"
+          onChange={handleChange}
+          value={userData.email}
+          onBlur={() => handleInputBlur("email")}
+          error={emailIsInvalid && "Please enter a valid email!"}
+        />
+        <Input
+          label="Password"
+          id="password"
+          type="password"
+          name="password"
+          onChange={handleChange}
+          value={userData.password}
+          onBlur={() => handleInputBlur("password")}
+          error={passwordIsInvalid && "Please enter a valid password!"}
+        />
       </div>
 
       <p className="form-actions">
